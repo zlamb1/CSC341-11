@@ -1,0 +1,10 @@
+# VSCode
+.cache/
+.vscode/
+
+# CMake / Build
+build/
+run.sh
+
+# Clang
+compile_commands.json

@@ -1,14 +1,14 @@
-# VSCode Settings
-### Prequisites
+## Prequisites
 - CMake 3.28.3+ Installed
 - C++ 17
 - Qt6 Installed
-### Build Instructions
+## Build Instructions
 - mkdir build
 - cd build
 - cmake ..
 - cmake --build .
-### To apply format on save with .clang-format, add the following file at the path .vscode/settings.json:
+## VSCode Settings
+#### To apply format on save with .clang-format, add the following file at the path .vscode/settings.json:
 ```
 {
     "[cpp]": {

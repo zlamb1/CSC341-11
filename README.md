@@ -1,4 +1,8 @@
 # VSCode Settings
+### Prequisites
+- CMake 3.28.3+ Installed
+- C++ 17
+- Qt6 Installed
 ### Build Instructions
 - mkdir build
 - cd build

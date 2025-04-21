@@ -5,3 +5,4 @@ IndentAccessModifiers: true
 Language: Cpp
 DerivePointerAlignment: false
 PointerAlignment: Right
+AllowShortFunctionsOnASingleLine: Empty

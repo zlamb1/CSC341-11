@@ -2,7 +2,9 @@
 
 #include <QWidget>
 
+class QLabel;
 class QLineEdit;
+class QPaintEvent;
 class QPushButton;
 
 class ZBottomBar : public QWidget {
@@ -12,9 +14,15 @@ class ZBottomBar : public QWidget {
         explicit ZBottomBar(QWidget *parent = 0);
         ~ZBottomBar();
 
-    private:
-        QLineEdit *msgLineEditor;
-        QLineEdit *userLineEditor;
+        void clearMessageText();
 
-        QPushButton *submitBtn;
+    protected slots:
+        void sendMessage(std::string text);
+
+    signals:
+        void onSendMessage(std::string text);
+
+    private:
+        QLineEdit *m_MsgLineEdit;
+        QPushButton *m_SubmitBtn;
 };

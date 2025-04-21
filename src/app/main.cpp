@@ -1,11 +1,10 @@
 #include <QApplication>
 #include <memory>
-#include <qobject.h>
 
 #include "data/msgrepo.hpp"
 #include "event/handler.hpp"
 #include "event/userevent.hpp"
-#include "mainwidget.hpp"
+#include "mainwindow.hpp"
 #include "service/userservice.hpp"
 
 int main(int argc, char *argv[]) {
@@ -13,26 +12,26 @@ int main(int argc, char *argv[]) {
 
     UserService userService;
 
-    MainWidget mainWidget{userService};
-    mainWidget.show();
+    MainWindow mainWindow{userService};
+    mainWindow.show();
 
     auto addUserHandler = CreateHandler<UserEvent>(
-        [&](auto event) { mainWidget.addUser(event.user()); });
+        [&](auto event) { mainWindow.addUser(event.user()); });
 
     userService.addUserAddHandler(addUserHandler);
 
     auto deleteUserHandler = CreateHandler<UserEvent>(
-        [&](auto event) { mainWidget.deleteUser(event.user()); });
+        [&](auto event) { mainWindow.deleteUser(event.user()); });
 
     MessageRepositoryRef globalMessageRepo =
         std::make_shared<MessageRepository>(RepositoryType::GLOBAL);
 
-    mainWidget.setMessageRepository(globalMessageRepo);
+    mainWindow.setMessageRepository(globalMessageRepo);
 
-    mainWidget.setMessageHandler([&](std::string text) {
-        if (auto repo = mainWidget.messageRepository()) {
+    mainWindow.setMessageHandler([&](std::string text) {
+        if (auto repo = mainWindow.messageRepository()) {
             repo->createMessage(text, userService.activeUser());
-            mainWidget.clearMessageText();
+            mainWindow.clearMessageText();
         }
     });
 

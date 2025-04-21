@@ -1,12 +1,13 @@
 #pragma once
 
-#include <QWidget>
+#include <QMainWindow>
 #include <functional>
 
 #include "data/msgrepo.hpp"
 #include "data/user.hpp"
 #include "service/userservice.hpp"
 #include "ui/mainview.hpp"
+#include "views/chatview.hpp"
 
 class QGridLayout;
 class QLabel;
@@ -21,13 +22,13 @@ class ZUserButton;
 class HLine;
 class VLine;
 
-class MainWidget : public QWidget, public MainView {
+class MainWindow : public QMainWindow, public MainView {
         Q_OBJECT
 
     public:
-        explicit MainWidget(const UserService &userService,
+        explicit MainWindow(const UserService &userService,
                             QWidget *parent = 0);
-        ~MainWidget();
+        ~MainWindow();
 
         virtual void addUser(UserRef userRef) override;
         virtual void deleteUser(UserRef userRef) override;
@@ -43,18 +44,8 @@ class MainWidget : public QWidget, public MainView {
         virtual void clearMessageText() override;
 
     private:
+        const UserService &m_UserService;
         MessageRepositoryRef m_ActiveRepo;
 
-        std::function<void(std::string)> m_MessageHandler = NULL;
-
-        QGridLayout *m_Layout;
-
-        QScrollArea *m_MessagePaneScrollArea;
-        ZMessagePane *m_MessagePane;
-
-        VLine *m_SideSeparator;
-        HLine *m_BottomSeparator;
-
-        ZSideBar *m_SideBar;
-        ZBottomBar *m_BottomBar;
+        ChatView *m_ChatView;
 };

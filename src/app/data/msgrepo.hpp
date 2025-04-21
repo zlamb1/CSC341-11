@@ -5,7 +5,7 @@
 
 #include "data/msg.hpp"
 #include "event/handler.hpp"
-#include "event/msg_event.hpp"
+#include "event/msgevent.hpp"
 
 enum class RepositoryType : int { GLOBAL, DIRECT, GROUP };
 

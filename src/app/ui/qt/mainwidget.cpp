@@ -6,12 +6,12 @@
 
 #include "mainwidget.hpp"
 
-#include "data/msg_repo.hpp"
-#include "widgets/msg/zmessagepane.hpp"
-#include "widgets/utility/hline.hpp"
-#include "widgets/utility/vline.hpp"
-#include "widgets/zbottombar.hpp"
-#include "widgets/zsidebar.hpp"
+#include "data/msgrepo.hpp"
+#include "msg/zmessagepane.hpp"
+#include "utility/hline.hpp"
+#include "utility/vline.hpp"
+#include "zbottombar.hpp"
+#include "zsidebar.hpp"
 
 MainWidget::MainWidget(const UserService &userService, QWidget *parent)
     : QWidget(parent) {

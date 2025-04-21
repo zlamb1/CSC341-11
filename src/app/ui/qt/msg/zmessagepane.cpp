@@ -1,14 +1,11 @@
 #include <functional>
 
 #include <QVBoxLayout>
-#include <qlabel.h>
-#include <qnamespace.h>
 
-#include "data/msg_repo.hpp"
-#include "event/handler.hpp"
-#include "event/msg_event.hpp"
-#include "widgets/msg/zmessage.hpp"
-#include "widgets/msg/zmessagepane.hpp"
+#include "data/msgrepo.hpp"
+#include "event/msgevent.hpp"
+#include "msg/zmessage.hpp"
+#include "msg/zmessagepane.hpp"
 
 ZMessagePane::ZMessagePane(QWidget *parent) : QWidget(parent) {
     auto addMessageHandler =

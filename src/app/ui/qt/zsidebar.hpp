@@ -3,8 +3,8 @@
 #include <unordered_map>
 
 #include "data/user.hpp"
-#include "service/user_service.hpp"
-#include "widgets/zuserbutton.hpp"
+#include "service/userservice.hpp"
+#include "zuserbutton.hpp"
 
 class QLabel;
 class QPaintEvent;

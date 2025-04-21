@@ -1,12 +1,11 @@
 #pragma once
 
-#include <memory>
 #include <unordered_map>
 #include <vector>
 
 #include "data/user.hpp"
 #include "event/handler.hpp"
-#include "event/user_event.hpp"
+#include "event/userevent.hpp"
 
 enum class UserCreateResult : int { SUCCESS = 1, UNIQUE_NAME_REQIRED = -1 };
 

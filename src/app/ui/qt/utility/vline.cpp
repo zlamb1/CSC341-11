@@ -1,4 +1,4 @@
-#include "widgets/utility/vline.hpp"
+#include "vline.hpp"
 
 VLine::VLine(QWidget *parent) : QFrame(parent) {
     setFrameShape(QFrame::VLine);

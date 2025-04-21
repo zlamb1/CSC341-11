@@ -6,7 +6,7 @@
 #include <qstyle.h>
 
 #include "data/user.hpp"
-#include "widgets/zuserbutton.hpp"
+#include "zuserbutton.hpp"
 
 ZUserButton::ZUserButton(UserRef userRef, QWidget *parent)
     : QWidget(parent), m_UserRef(userRef) {

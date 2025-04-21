@@ -4,9 +4,8 @@
 #include <QPainter>
 
 #include "data/user.hpp"
-#include "widgets/mainwidget.hpp"
-#include "widgets/zsidebar.hpp"
-#include "widgets/zuserbutton.hpp"
+#include "zsidebar.hpp"
+#include "zuserbutton.hpp"
 
 ZSideBar::ZSideBar(const UserService &userService, QWidget *parent)
     : QWidget(parent) {

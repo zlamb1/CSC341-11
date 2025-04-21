@@ -1,4 +1,4 @@
-#include "widgets/utility/hline.hpp"
+#include "hline.hpp"
 
 HLine::HLine(QWidget *parent) : QFrame(parent) {
     setFrameShape(QFrame::HLine);

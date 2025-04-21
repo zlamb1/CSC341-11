@@ -3,10 +3,10 @@
 #include <QWidget>
 #include <functional>
 
-#include "data/msg_repo.hpp"
+#include "data/msgrepo.hpp"
 #include "data/user.hpp"
-#include "service/user_service.hpp"
-#include "widgets/mainview.hpp"
+#include "service/userservice.hpp"
+#include "ui/mainview.hpp"
 
 class QGridLayout;
 class QLabel;

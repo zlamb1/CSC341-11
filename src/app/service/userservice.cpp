@@ -1,8 +1,6 @@
-#include <memory>
-
+#include "service/userservice.hpp"
 #include "event/handler.hpp"
-#include "event/user_event.hpp"
-#include "service/user_service.hpp"
+#include "event/userevent.hpp"
 
 UserService::UserService() {
     std::string name = "User #";

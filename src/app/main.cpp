@@ -1,13 +1,12 @@
 #include <QApplication>
-#include <iostream>
 #include <memory>
 #include <qobject.h>
 
-#include "data/msg_repo.hpp"
+#include "data/msgrepo.hpp"
 #include "event/handler.hpp"
-#include "event/user_event.hpp"
-#include "service/user_service.hpp"
-#include "widgets/mainwidget.hpp"
+#include "event/userevent.hpp"
+#include "mainwidget.hpp"
+#include "service/userservice.hpp"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);

@@ -1,9 +1,8 @@
 #pragma once
 
 #include <QWidget>
-#include <qtmetamacros.h>
 
-#include "data/msg_repo.hpp"
+#include "data/msgrepo.hpp"
 
 class QLabel;
 class QVBoxLayout;

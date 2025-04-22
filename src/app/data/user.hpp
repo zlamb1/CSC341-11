@@ -12,8 +12,6 @@ class User {
 
     protected:
         std::string m_Name;
-
-    private:
 };
 
 using UserRef = std::shared_ptr<User>;

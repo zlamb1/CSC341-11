@@ -22,9 +22,11 @@ class Message {
         const std::string &text() const {
             return m_Text;
         };
+
         UserRef sender() const {
             return m_Sender;
         }
+
         MessageTime messageTime() const {
             return m_MessageTime;
         }

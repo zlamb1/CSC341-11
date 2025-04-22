@@ -10,7 +10,4 @@ set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
 project(CSC341_11 VERSION 1.0.0 LANGUAGES CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
-qt_standard_project_setup()
-
 add_subdirectory(src/app)

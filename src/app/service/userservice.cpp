@@ -29,7 +29,7 @@ UserCreateResult UserService::createUser(const std::string &name) {
     if (m_UserMap.count(name))
         return UserCreateResult::UNIQUE_NAME_REQIRED;
 
-    auto user = m_Users.emplace_back(std::make_shared<User>(name));
+    auto user       = m_Users.emplace_back(std::make_shared<User>(name));
     m_UserMap[name] = user;
 
     UserEvent userEvent(user);
@@ -51,6 +51,30 @@ UserCreateResult UserService::createUser(const std::string &name) {
     }
 
     return UserCreateResult::SUCCESS;
+}
+
+bool UserService::deleteUser(const std::string &name) {
+    if (m_UserMap.count(name)) {
+        auto user = m_UserMap[name];
+        m_UserMap.erase(name);
+
+        for (auto iter = m_Users.begin(); iter != m_Users.end(); iter++) {
+            if (iter->get()->name() == name) {
+                m_Users.erase(iter);
+                break;
+            }
+        }
+
+        UserEvent userEvent(user);
+        for (auto handler : m_UserDeleteHandlers) {
+            if (auto handlerRef = handler.lock()) {
+                handlerRef->onEvent(userEvent);
+            }
+        }
+
+        return true;
+    }
+    return false;
 }
 
 void UserService::addUserAddHandler(HandlerRef<UserEvent> userAddHandler) {

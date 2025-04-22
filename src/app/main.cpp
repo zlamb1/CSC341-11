@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     auto deleteUserHandler = CreateHandler<UserEvent>(
         [&](auto event) { mainWindow.deleteUser(event.user()); });
 
-    MessageRepositoryRef globalMessageRepo =
+    IMessageRepositoryRef globalMessageRepo =
         std::make_shared<MessageRepository>(RepositoryType::GLOBAL);
 
     mainWindow.setMessageRepository(globalMessageRepo);

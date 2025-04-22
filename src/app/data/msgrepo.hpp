@@ -9,21 +9,44 @@
 
 enum class RepositoryType : int { GLOBAL, DIRECT, GROUP };
 
-class MessageRepository {
+class IMessageRepository {
+    public:
+        virtual RepositoryType repositoryType() const           = 0;
+        virtual const std::vector<MessageRef> &messages() const = 0;
+
+        virtual void createMessage(std::string text, UserRef sender) = 0;
+        virtual void createMessage(std::string text, UserRef sender,
+                                   MessageTime messageTime)          = 0;
+
+        virtual void
+        addMessageAddHandler(HandlerRef<MessageEvent> messageAddHandler) = 0;
+
+        virtual bool
+        removeMessageAddHandler(HandlerRef<MessageEvent> messageAddHandler) = 0;
+};
+
+class MessageRepository : public IMessageRepository {
     public:
         MessageRepository(RepositoryType repositoryType)
             : m_RepoType(repositoryType) {}
 
-        RepositoryType repositoryType() const {
+        RepositoryType repositoryType() const override {
             return m_RepoType;
         }
 
-        const std::vector<MessageRef> &messages() const {
+        const std::vector<MessageRef> &messages() const override {
             return m_Messages;
         }
 
-        void createMessage(std::string text, UserRef sender) {
+        virtual void createMessage(std::string text, UserRef sender) override {
             MessageRef messageRef = std::make_shared<Message>(text, sender);
+            addMessage(messageRef);
+        }
+
+        virtual void createMessage(std::string text, UserRef sender,
+                                   MessageTime messageTime) override {
+            MessageRef messageRef =
+                std::make_shared<Message>(text, sender, messageTime);
             addMessage(messageRef);
         }
 
@@ -42,12 +65,13 @@ class MessageRepository {
             }
         }
 
-        void addMessageAddHandler(HandlerRef<MessageEvent> messageAddHandler) {
+        void addMessageAddHandler(
+            HandlerRef<MessageEvent> messageAddHandler) override {
             m_MessageAddHandlers.emplace_back(messageAddHandler);
         }
 
-        bool
-        removeMessageAddHandler(HandlerRef<MessageEvent> messageAddHandler) {
+        bool removeMessageAddHandler(
+            HandlerRef<MessageEvent> messageAddHandler) override {
             for (auto iter = m_MessageAddHandlers.begin();
                  iter != m_MessageAddHandlers.end();) {
                 auto handlerRef = iter->lock();
@@ -70,4 +94,4 @@ class MessageRepository {
     private:
 };
 
-using MessageRepositoryRef = std::shared_ptr<MessageRepository>;
+using IMessageRepositoryRef = std::shared_ptr<IMessageRepository>;

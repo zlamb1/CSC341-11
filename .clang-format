@@ -6,3 +6,5 @@ Language: Cpp
 DerivePointerAlignment: false
 PointerAlignment: Right
 AllowShortFunctionsOnASingleLine: Empty
+AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: true

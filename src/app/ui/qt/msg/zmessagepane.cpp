@@ -18,12 +18,12 @@ ZMessagePane::ZMessagePane(QWidget *parent) : QWidget(parent) {
     setLayout(m_Layout);
 }
 
-MessageRepositoryRef ZMessagePane::messageRepository() const {
+IMessageRepositoryRef ZMessagePane::messageRepository() const {
     return m_MessageRepo;
 }
 
 void ZMessagePane::setMessageRepository(
-    MessageRepositoryRef messageRepository) {
+    IMessageRepositoryRef messageRepository) {
     if (m_MessageRepo)
         m_MessageRepo->removeMessageAddHandler(m_MessageAddHandler);
     clearMessages();

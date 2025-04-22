@@ -72,7 +72,7 @@ void ChatView::deleteUser(UserRef userRef) {
     m_SideBar->deleteUser(userRef);
 }
 
-void ChatView::setMessageRepository(MessageRepositoryRef messageRepo) {
+void ChatView::setMessageRepository(IMessageRepositoryRef messageRepo) {
     m_MessagePane->setMessageRepository(messageRepo);
 }
 

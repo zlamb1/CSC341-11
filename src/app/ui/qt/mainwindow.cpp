@@ -9,7 +9,7 @@
 
 MainWindow::MainWindow(const UserService &userService, QWidget *parent)
     : QMainWindow(parent), m_UserService(userService) {
-    m_ChatView = new ChatView(userService);
+    m_ChatView                   = new ChatView(userService);
     QStackedWidget *centerWidget = new QStackedWidget;
     centerWidget->addWidget(m_ChatView);
     centerWidget->setCurrentWidget(m_ChatView);
@@ -30,11 +30,11 @@ void MainWindow::deleteUser(UserRef userRef) {
     m_ChatView->deleteUser(userRef);
 }
 
-MessageRepositoryRef MainWindow::messageRepository() const {
+IMessageRepositoryRef MainWindow::messageRepository() const {
     return m_ActiveRepo;
 }
 
-void MainWindow::setMessageRepository(MessageRepositoryRef messageRepo) {
+void MainWindow::setMessageRepository(IMessageRepositoryRef messageRepo) {
     m_ChatView->setMessageRepository(messageRepo);
     m_ActiveRepo = messageRepo;
 }

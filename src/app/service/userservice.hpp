@@ -9,22 +9,48 @@
 
 enum class UserCreateResult : int { SUCCESS = 1, UNIQUE_NAME_REQIRED = -1 };
 
-class UserService {
+class IUserService {
+    public:
+        virtual UserRef activeUser()                  = 0;
+        virtual UserRef user(const std::string &name) = 0;
+
+        virtual const std::vector<UserRef> &users() const = 0;
+
+        virtual UserCreateResult createUser(const std::string &name) = 0;
+        virtual bool deleteUser(const std::string &name)             = 0;
+
+        virtual void
+        addUserAddHandler(HandlerRef<UserEvent> userAddHandler) = 0;
+        virtual bool
+        removeUserAddHandler(HandlerRef<UserEvent> userAddHandler) = 0;
+
+        virtual void
+        addUserDeleteHandler(HandlerRef<UserEvent> userDeleteHandler) = 0;
+        virtual bool
+        removeUserDeleteHandler(HandlerRef<UserEvent> userDeleteHandler) = 0;
+};
+
+class UserService : public IUserService {
     public:
         UserService();
 
-        UserRef activeUser();
+        virtual UserRef activeUser() override;
 
-        UserRef user(const std::string &name);
-        const std::vector<UserRef> &users() const;
+        virtual UserRef user(const std::string &name) override;
+        virtual const std::vector<UserRef> &users() const override;
 
-        UserCreateResult createUser(const std::string &name);
+        virtual UserCreateResult createUser(const std::string &name) override;
+        virtual bool deleteUser(const std::string &name) override;
 
-        void addUserAddHandler(HandlerRef<UserEvent> userAddHandler);
-        bool removeUserAddHandler(HandlerRef<UserEvent> userAddHandler);
+        virtual void
+        addUserAddHandler(HandlerRef<UserEvent> userAddHandler) override;
+        virtual bool
+        removeUserAddHandler(HandlerRef<UserEvent> userAddHandler) override;
 
-        void addUserDeleteHandler(HandlerRef<UserEvent> userDeleteHandler);
-        bool removeUserDeleteHandler(HandlerRef<UserEvent> userDeleteHandler);
+        virtual void
+        addUserDeleteHandler(HandlerRef<UserEvent> userDeleteHandler) override;
+        virtual bool removeUserDeleteHandler(
+            HandlerRef<UserEvent> userDeleteHandler) override;
 
     protected:
         UserRef m_ActiveUser;
@@ -35,3 +61,5 @@ class UserService {
         HandlerList<UserEvent> m_UserAddHandlers;
         HandlerList<UserEvent> m_UserDeleteHandlers;
 };
+
+using IUserServiceRef = std::shared_ptr<IUserService>;

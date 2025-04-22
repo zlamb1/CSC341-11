@@ -12,15 +12,15 @@ class ZMessagePane : public QWidget {
     public:
         explicit ZMessagePane(QWidget *parent = 0);
 
-        MessageRepositoryRef messageRepository() const;
-        void setMessageRepository(MessageRepositoryRef messageRepository);
+        IMessageRepositoryRef messageRepository() const;
+        void setMessageRepository(IMessageRepositoryRef messageRepository);
 
         void clearMessages();
 
     protected:
         QVBoxLayout *m_Layout;
 
-        MessageRepositoryRef m_MessageRepo;
+        IMessageRepositoryRef m_MessageRepo;
 
         HandlerRef<MessageEvent> m_MessageAddHandler;
 

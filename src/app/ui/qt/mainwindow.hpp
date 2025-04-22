@@ -33,10 +33,10 @@ class MainWindow : public QMainWindow, public MainView {
         virtual void addUser(UserRef userRef) override;
         virtual void deleteUser(UserRef userRef) override;
 
-        virtual MessageRepositoryRef messageRepository() const override;
+        virtual IMessageRepositoryRef messageRepository() const override;
 
         virtual void
-        setMessageRepository(MessageRepositoryRef messageRepo) override;
+        setMessageRepository(IMessageRepositoryRef messageRepo) override;
 
         virtual void
         setMessageHandler(std::function<void(std::string)> handler) override;
@@ -45,7 +45,7 @@ class MainWindow : public QMainWindow, public MainView {
 
     private:
         const UserService &m_UserService;
-        MessageRepositoryRef m_ActiveRepo;
+        IMessageRepositoryRef m_ActiveRepo;
 
         ChatView *m_ChatView;
 };

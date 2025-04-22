@@ -25,7 +25,7 @@ class ChatView : public QWidget {
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);
 
-        void setMessageRepository(MessageRepositoryRef messageRepo);
+        void setMessageRepository(IMessageRepositoryRef messageRepo);
         void setMessageHandler(std::function<void(std::string)> messageHandler);
         void clearMessageText();
 

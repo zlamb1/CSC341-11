@@ -9,11 +9,12 @@
 
 class MainView {
     public:
-        virtual void addUser(UserRef userRef) = 0;
+        virtual void addUser(UserRef userRef)    = 0;
         virtual void deleteUser(UserRef userRef) = 0;
 
-        virtual MessageRepositoryRef messageRepository() const = 0;
-        virtual void setMessageRepository(MessageRepositoryRef messageRepo) = 0;
+        virtual IMessageRepositoryRef messageRepository() const = 0;
+        virtual void
+        setMessageRepository(IMessageRepositoryRef messageRepo) = 0;
 
         virtual void
         setMessageHandler(std::function<void(std::string)> handler) = 0;

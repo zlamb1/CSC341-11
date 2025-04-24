@@ -72,11 +72,12 @@ void ChatAppModel::createClient(std::string hostAddress, uint16_t port) {
 
     auto clientUserService =
         std::make_shared<ClientUserService>(m_UserService, m_NetworkClient);
+    m_ActiveUserService = clientUserService;
+
     auto clientMessageRepository = std::make_shared<ClientMessageRepository>(
         m_GlobalMessageRepository, clientUserService, m_NetworkClient);
+    setActiveMessageRepository(clientMessageRepository);
 
     m_NetworkClient->addPacketHandler(clientUserService);
     m_NetworkClient->addPacketHandler(clientMessageRepository);
-
-    setActiveMessageRepository(clientMessageRepository);
 }

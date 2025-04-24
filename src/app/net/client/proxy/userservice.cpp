@@ -61,6 +61,10 @@ void ClientUserService::handlePacket(PacketRequest *request) {
         auto userConnectPacket =
             std::dynamic_pointer_cast<UserConnectPacket>(basePacket);
         m_UserService->createUser(userConnectPacket->name());
+        auto user = m_UserService->user(userConnectPacket->name());
+        if (userConnectPacket->isSelf() && user) {
+            m_UserService->setActiveUser(user);
+        }
         break;
     }
     case PacketType::UserDisconnect: {

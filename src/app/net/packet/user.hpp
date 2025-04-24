@@ -6,15 +6,20 @@
 
 struct UserConnectPacket : public BasePacket {
     public:
-        UserConnectPacket(std::string name)
-            : BasePacket(PacketType::UserConnect), m_Name(name) {}
+        UserConnectPacket(std::string name, bool self = false)
+            : BasePacket(PacketType::UserConnect), m_Name(name), m_Self(self) {}
 
         const std::string &name() {
             return m_Name;
         }
 
+        bool isSelf() const {
+            return m_Self;
+        }
+
     protected:
         std::string m_Name;
+        bool m_Self;
 };
 
 struct UserDisconnectPacket : public BasePacket {

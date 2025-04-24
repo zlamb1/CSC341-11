@@ -5,6 +5,7 @@
 #include <string>
 
 #include "data/msgrepo.hpp"
+#include "service/userservice.hpp"
 
 template <typename ReturnType = void, typename... Args>
 using Function = std::function<ReturnType(Args...)>;
@@ -13,7 +14,10 @@ class IAppModel {
     public:
         virtual ~IAppModel() = default;
 
-        IMessageRepositoryRef activeMessageRepository();
+        IUserServiceRef activeUserService() const;
+        void setActiveUserService(IUserServiceRef activeUserService);
+
+        IMessageRepositoryRef activeMessageRepository() const;
         void setActiveMessageRepository(
             IMessageRepositoryRef activeMessageRepository);
 
@@ -41,7 +45,9 @@ class IAppModel {
         notifyClientDisconnectNotifier(Function<void> clientDisconnectNotifier);
 
     protected:
+        IUserServiceRef m_ActiveUserService;
         IMessageRepositoryRef m_ActiveMessageRepository;
+
         std::string m_RequestedName;
 
         Function<void, UserRef> m_UserAddNotifier;

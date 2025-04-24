@@ -22,8 +22,13 @@ MainWindow::MainWindow(IAppModel *appModel, QWidget *parent)
     m_AppModel->notifyUserDeleteNotifier(
         [this](auto user) { m_ChatView->deleteUser(user); });
 
-    m_AppModel->notifyMessageAddNotifier(
-        [this](auto message) { m_ChatView->clearMessageText(); });
+    m_AppModel->notifyMessageAddNotifier([this](auto message) {
+        if (m_AppModel->activeUserService() &&
+            message->sender() ==
+                m_AppModel->activeUserService()->activeUser()) {
+            m_ChatView->clearMessageText();
+        }
+    });
 
     m_AppModel->notifyActiveMessageRepositoryChange(
         [this](auto messageRepository) {

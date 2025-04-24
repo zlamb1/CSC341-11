@@ -124,6 +124,7 @@ void QtPacketSerializer::serialize(QTcpSocket *socket,
     case PacketType::UserConnect: {
         auto packet = std::dynamic_pointer_cast<UserConnectPacket>(basePacket);
         writeString(byteArray, packet->name());
+        writeUnsignedInt8(byteArray, packet->isSelf());
         break;
     }
     case PacketType::MessageReceive: {
@@ -222,7 +223,8 @@ BasePacketRef QtPacketSerializer::deserialize(QTcpSocket *socket, bool *ready) {
             auto name = readString(data, &malformed);
             if (malformed)
                 return nullptr;
-            packet = CreatePacketRef<UserConnectPacket>(name);
+            bool self = readUnsignedInt8(data);
+            packet    = CreatePacketRef<UserConnectPacket>(name, self);
             break;
         }
         case PacketType::MessageReceive: {

@@ -40,13 +40,14 @@ void QtNetworkServer::incomingConnection(qintptr socketDescriptor) {
                 }
             }
 
-            // create new user
+            // connect client
             clientConnection->setName(name);
 
+            // notify new client of all clients
             for (auto conn : m_ClientConnections) {
                 if (conn->isConnected()) {
-                    auto connectPacket =
-                        CreatePacketRef<UserConnectPacket>(conn->name());
+                    auto connectPacket = CreatePacketRef<UserConnectPacket>(
+                        conn->name(), conn == clientConnection);
                     clientConnection->writePacket(connectPacket);
                 }
             }

@@ -1,7 +1,16 @@
 #include "appmodel.hpp"
 #include "data/user.hpp"
+#include "service/userservice.hpp"
 
-IMessageRepositoryRef IAppModel::activeMessageRepository() {
+IUserServiceRef IAppModel::activeUserService() const {
+    return m_ActiveUserService;
+}
+
+void IAppModel::setActiveUserService(IUserServiceRef activeUserService) {
+    m_ActiveUserService = activeUserService;
+}
+
+IMessageRepositoryRef IAppModel::activeMessageRepository() const {
     return m_ActiveMessageRepository;
 }
 

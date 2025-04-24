@@ -1,25 +1,28 @@
 #pragma once
 
-#include "data/msg.hpp"
 #include "data/msgrepo.hpp"
-#include "net/networkservice.hpp"
+#include "net/client/networkclient.hpp"
 #include "net/packet/dest.hpp"
+#include "service/userservice.hpp"
 
 /**
  * @Pattern Proxy
  */
 
-class ClientMessageRepository : public IMessageRepository, PacketDestination {
+class ClientMessageRepository : public IMessageRepository,
+                                public PacketHandler {
     public:
         ClientMessageRepository(IMessageRepositoryRef messageRepo,
-                                INetworkServiceRef networkService);
+                                IUserServiceRef userService,
+                                INetworkClientRef networkService);
+        virtual ~ClientMessageRepository() = default;
 
         virtual RepositoryType repositoryType() const override;
         virtual const std::vector<MessageRef> &messages() const override;
 
-        virtual void createMessage(std::string text, UserRef sender) override;
-        virtual void createMessage(std::string text, UserRef sender,
-                                   MessageTime messageTime) override;
+        virtual void
+        createMessage(std::string text, UserRef sender,
+                      MessageTime messageTime = GetSystemClockNow()) override;
 
         virtual void addMessageAddHandler(
             HandlerRef<MessageEvent> messageAddHandler) override;
@@ -31,5 +34,6 @@ class ClientMessageRepository : public IMessageRepository, PacketDestination {
 
     protected:
         IMessageRepositoryRef m_MessageRepo;
-        INetworkServiceRef m_NetworkService;
+        IUserServiceRef m_UserService;
+        INetworkClientRef m_NetworkClient;
 };

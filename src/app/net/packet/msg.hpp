@@ -4,29 +4,36 @@
 
 #include "base.hpp"
 #include "data/msg.hpp"
-#include "data/user.hpp"
 
-struct MessageSendPacket : public BasePacket {
+struct MessageReceivePacket : public BasePacket {
     public:
-        MessageSendPacket(std::string text, UserRef sender,
-                          MessageTime messageTime)
-            : BasePacket(PacketType::MessageSend), m_Text(text),
-              m_Sender(sender), m_MessageTime(messageTime) {}
+        MessageReceivePacket(std::string text, std::string sender)
+            : BasePacket(PacketType::MessageReceive), m_Text(text),
+              m_Sender(sender) {}
 
         std::string text() const {
             return m_Text;
         }
 
-        UserRef sender() const {
+        std::string sender() const {
             return m_Sender;
-        }
-
-        MessageTime messageTime() const {
-            return m_MessageTime;
         }
 
     protected:
         std::string m_Text;
-        UserRef m_Sender;
+        std::string m_Sender;
         MessageTime m_MessageTime;
+};
+
+struct MessageSendPacket : public BasePacket {
+    public:
+        MessageSendPacket(std::string text)
+            : BasePacket(PacketType::MessageSend), m_Text(text) {}
+
+        std::string text() const {
+            return m_Text;
+        }
+
+    protected:
+        std::string m_Text;
 };

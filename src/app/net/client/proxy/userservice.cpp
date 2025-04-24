@@ -1,14 +1,20 @@
-#include "service/userservice.hpp"
+#include <memory>
+
 #include "net/packet/base.hpp"
-#include "net/packet/dest.hpp"
 #include "net/packet/user.hpp"
+#include "service/userservice.hpp"
 #include "userservice.hpp"
 
-ClientUserService::ClientUserService(IUserServiceRef userService)
-    : m_UserService(userService) {}
+ClientUserService::ClientUserService(IUserServiceRef userService,
+                                     INetworkClientRef networkClient)
+    : m_UserService(userService), m_NetworkClient(networkClient) {}
 
 UserRef ClientUserService::activeUser() {
     return m_UserService->activeUser();
+}
+
+void ClientUserService::setActiveUser(UserRef activeUser) {
+    m_UserService->setActiveUser(activeUser);
 }
 
 UserRef ClientUserService::user(const std::string &name) {
@@ -24,7 +30,7 @@ UserCreateResult ClientUserService::createUser(const std::string &name) {
 }
 
 bool ClientUserService::deleteUser(const std::string &name) {
-    return false;
+    return true;
 }
 
 void ClientUserService::addUserAddHandler(
@@ -52,15 +58,16 @@ void ClientUserService::handlePacket(PacketRequest *request) {
     switch (basePacket->packetType()) {
     case PacketType::UserConnect: {
         request->accept();
-        auto packet = std::dynamic_pointer_cast<UserConnectPacket>(basePacket);
-        m_UserService->createUser(packet->name());
+        auto userConnectPacket =
+            std::dynamic_pointer_cast<UserConnectPacket>(basePacket);
+        m_UserService->createUser(userConnectPacket->name());
         break;
     }
     case PacketType::UserDisconnect: {
         request->accept();
-        auto packet =
+        auto userDisconnectPacket =
             std::dynamic_pointer_cast<UserDisconnectPacket>(basePacket);
-        m_UserService->deleteUser(packet->name());
+        m_UserService->deleteUser(userDisconnectPacket->name());
         break;
     }
     default:

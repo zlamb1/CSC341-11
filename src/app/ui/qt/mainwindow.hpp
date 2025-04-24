@@ -5,14 +5,15 @@
 
 #include "data/msgrepo.hpp"
 #include "data/user.hpp"
-#include "service/userservice.hpp"
 #include "ui/mainview.hpp"
 #include "views/chatview.hpp"
+#include "views/menuview.hpp"
 
 class QGridLayout;
 class QLabel;
 class QLineEdit;
 class QScrollArea;
+class QStackedWidget;
 
 class ZSideBar;
 class ZBottomBar;
@@ -26,9 +27,13 @@ class MainWindow : public QMainWindow, public MainView {
         Q_OBJECT
 
     public:
-        explicit MainWindow(const UserService &userService,
-                            QWidget *parent = 0);
-        ~MainWindow();
+        explicit MainWindow(QWidget *parent = 0);
+        virtual ~MainWindow() override;
+
+        virtual void show() override;
+
+        virtual void showMenuView() override;
+        virtual void showChatView() override;
 
         virtual void addUser(UserRef userRef) override;
         virtual void deleteUser(UserRef userRef) override;
@@ -38,14 +43,23 @@ class MainWindow : public QMainWindow, public MainView {
         virtual void
         setMessageRepository(IMessageRepositoryRef messageRepo) override;
 
+        virtual void setHostHandler(std::function<void()> hostHandler) override;
+        virtual void
+        setConnectHandler(std::function<void()> connectHandler) override;
+
         virtual void
         setMessageHandler(std::function<void(std::string)> handler) override;
 
         virtual void clearMessageText() override;
 
     private:
-        const UserService &m_UserService;
+        QStackedWidget *m_CenterWidget;
+
+        MenuView *m_MenuView;
+        ChatView *m_ChatView;
+
         IMessageRepositoryRef m_ActiveRepo;
 
-        ChatView *m_ChatView;
+        bool m_HostHandlerSet = false, m_ConnectHandlerSet = false;
+        QMetaObject::Connection m_HostHandler, m_ConnectHandler;
 };

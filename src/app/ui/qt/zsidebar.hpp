@@ -3,7 +3,6 @@
 #include <unordered_map>
 
 #include "data/user.hpp"
-#include "service/userservice.hpp"
 #include "zuserbutton.hpp"
 
 class QLabel;
@@ -13,11 +12,12 @@ class QVBoxLayout;
 class ZSideBar : public QWidget {
         Q_OBJECT
     public:
-        explicit ZSideBar(const UserService &userService, QWidget *parent = 0);
+        explicit ZSideBar(QWidget *parent = 0);
         ~ZSideBar();
 
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);
+        void clearUsers();
 
     protected:
         void updateMemberCount(int newCount);

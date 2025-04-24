@@ -3,16 +3,18 @@
 #include <memory>
 #include <stdint.h>
 
-enum class PacketType : int {
+enum class PacketType : uint32_t {
     KeepAlive      = 0,
     UserConnect    = 1,
     UserDisconnect = 2,
-    MessageSend    = 3
+    MessageReceive = 3,
+    MessageSend    = 4
 };
 
 struct BasePacket {
     public:
         BasePacket(PacketType packetType) : m_PacketType(packetType) {}
+        virtual ~BasePacket() = default;
 
         PacketType packetType() const {
             return m_PacketType;

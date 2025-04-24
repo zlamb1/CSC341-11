@@ -2,24 +2,41 @@
 
 #include <QLabel>
 #include <QLineEdit>
-#include <qlabel.h>
-#include <qstackedwidget.h>
 
 #include "mainwindow.hpp"
+#include "views/menuview.hpp"
 
-MainWindow::MainWindow(const UserService &userService, QWidget *parent)
-    : QMainWindow(parent), m_UserService(userService) {
-    m_ChatView                   = new ChatView(userService);
-    QStackedWidget *centerWidget = new QStackedWidget;
-    centerWidget->addWidget(m_ChatView);
-    centerWidget->setCurrentWidget(m_ChatView);
-    setCentralWidget(centerWidget);
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+    m_CenterWidget = new QStackedWidget;
+    m_MenuView     = new MenuView;
+    m_ChatView     = new ChatView;
+
+    m_CenterWidget->addWidget(m_MenuView);
+    m_CenterWidget->addWidget(m_ChatView);
+
+    m_CenterWidget->setCurrentWidget(m_MenuView);
+    setCentralWidget(m_CenterWidget);
+
     resize(500, 500);
     setWindowTitle(tr("EmberChat"));
 }
 
 MainWindow::~MainWindow() {
+    delete m_MenuView;
     delete m_ChatView;
+    delete m_CenterWidget;
+}
+
+void MainWindow::show() {
+    QWidget::show();
+}
+
+void MainWindow::showMenuView() {
+    m_CenterWidget->setCurrentWidget(m_MenuView);
+}
+
+void MainWindow::showChatView() {
+    m_CenterWidget->setCurrentWidget(m_ChatView);
 }
 
 void MainWindow::addUser(UserRef userRef) {
@@ -37,6 +54,24 @@ IMessageRepositoryRef MainWindow::messageRepository() const {
 void MainWindow::setMessageRepository(IMessageRepositoryRef messageRepo) {
     m_ChatView->setMessageRepository(messageRepo);
     m_ActiveRepo = messageRepo;
+}
+
+void MainWindow::setHostHandler(std::function<void()> hostHandler) {
+    if (m_HostHandlerSet)
+        QObject::disconnect(m_HostHandler);
+    else
+        m_HostHandlerSet = true;
+    m_HostHandler =
+        QObject::connect(m_MenuView, &MenuView::onHost, hostHandler);
+}
+
+void MainWindow::setConnectHandler(std::function<void()> connectHandler) {
+    if (m_ConnectHandlerSet)
+        QObject::disconnect(m_ConnectHandler);
+    else
+        m_ConnectHandlerSet = true;
+    m_ConnectHandler =
+        QObject::connect(m_MenuView, &MenuView::onConnect, connectHandler);
 }
 
 void MainWindow::setMessageHandler(

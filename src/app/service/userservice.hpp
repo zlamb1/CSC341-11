@@ -11,7 +11,9 @@ enum class UserCreateResult : int { SUCCESS = 1, UNIQUE_NAME_REQIRED = -1 };
 
 class IUserService {
     public:
-        virtual UserRef activeUser()                  = 0;
+        virtual UserRef activeUser()                   = 0;
+        virtual void setActiveUser(UserRef activeUser) = 0;
+
         virtual UserRef user(const std::string &name) = 0;
 
         virtual const std::vector<UserRef> &users() const = 0;
@@ -32,9 +34,10 @@ class IUserService {
 
 class UserService : public IUserService {
     public:
-        UserService();
+        virtual ~UserService() = default;
 
         virtual UserRef activeUser() override;
+        virtual void setActiveUser(UserRef activeUser) override;
 
         virtual UserRef user(const std::string &name) override;
         virtual const std::vector<UserRef> &users() const override;

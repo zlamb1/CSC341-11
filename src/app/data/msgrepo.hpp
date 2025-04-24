@@ -14,9 +14,9 @@ class IMessageRepository {
         virtual RepositoryType repositoryType() const           = 0;
         virtual const std::vector<MessageRef> &messages() const = 0;
 
-        virtual void createMessage(std::string text, UserRef sender) = 0;
-        virtual void createMessage(std::string text, UserRef sender,
-                                   MessageTime messageTime)          = 0;
+        virtual void
+        createMessage(std::string text, UserRef sender,
+                      MessageTime messageTime = GetSystemClockNow()) = 0;
 
         virtual void
         addMessageAddHandler(HandlerRef<MessageEvent> messageAddHandler) = 0;
@@ -29,6 +29,7 @@ class MessageRepository : public IMessageRepository {
     public:
         MessageRepository(RepositoryType repositoryType)
             : m_RepoType(repositoryType) {}
+        virtual ~MessageRepository() = default;
 
         RepositoryType repositoryType() const override {
             return m_RepoType;
@@ -36,11 +37,6 @@ class MessageRepository : public IMessageRepository {
 
         const std::vector<MessageRef> &messages() const override {
             return m_Messages;
-        }
-
-        virtual void createMessage(std::string text, UserRef sender) override {
-            MessageRef messageRef = std::make_shared<Message>(text, sender);
-            addMessage(messageRef);
         }
 
         virtual void createMessage(std::string text, UserRef sender,

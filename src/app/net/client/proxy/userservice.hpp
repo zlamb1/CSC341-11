@@ -1,19 +1,20 @@
 #pragma once
 
+#include "net/client/networkclient.hpp"
 #include "net/packet/dest.hpp"
 #include "service/userservice.hpp"
 
-/**
- * @Pattern Proxy
- */
-
-class ClientUserService : public IUserService, public PacketDestination {
+class ClientUserService : public UserService, public PacketHandler {
     public:
-        ClientUserService(IUserServiceRef userService);
+        ClientUserService(IUserServiceRef userService,
+                          INetworkClientRef networkClient);
+        virtual ~ClientUserService() = default;
 
         virtual UserRef activeUser() override;
+        virtual void setActiveUser(UserRef activeUser) override;
 
         virtual UserRef user(const std::string &name) override;
+
         virtual const std::vector<UserRef> &users() const override;
 
         virtual UserCreateResult createUser(const std::string &name) override;
@@ -33,4 +34,5 @@ class ClientUserService : public IUserService, public PacketDestination {
 
     protected:
         IUserServiceRef m_UserService;
+        INetworkClientRef m_NetworkClient;
 };

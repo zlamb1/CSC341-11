@@ -7,17 +7,14 @@
 #include "zsidebar.hpp"
 #include "zuserbutton.hpp"
 
-ZSideBar::ZSideBar(const UserService &userService, QWidget *parent)
-    : QWidget(parent) {
+ZSideBar::ZSideBar(QWidget *parent) : QWidget(parent) {
     m_Layout = new QVBoxLayout();
     m_Layout->setAlignment(Qt::AlignTop);
 
     m_MembersLabel = new QLabel();
     m_Layout->addWidget(m_MembersLabel);
 
-    auto users = userService.users();
-    for (auto user : users)
-        addUser(user);
+    updateMemberCount(0);
 
     setLayout(m_Layout);
 }
@@ -28,22 +25,33 @@ ZSideBar::~ZSideBar() {
 }
 
 void ZSideBar::addUser(UserRef userRef) {
-    auto *button = new ZUserButton(userRef);
+    auto *button                   = new ZUserButton(userRef);
     m_UserButtons[userRef->name()] = button;
-    updateMemberCount(m_MemberCount + 1);
     m_Layout->addWidget(button);
+    updateMemberCount(m_MemberCount + 1);
 }
 
 void ZSideBar::deleteUser(UserRef userRef) {
     if (m_UserButtons.count(userRef->name())) {
-        auto *button = m_UserButtons[userRef->name()];
+        auto button = m_UserButtons[userRef->name()];
         m_UserButtons.erase(userRef->name());
-        updateMemberCount(m_MemberCount - 1);
         m_Layout->removeWidget(button);
+        button->deleteLater();
+        updateMemberCount(m_MemberCount - 1);
     }
 }
 
+void ZSideBar::clearUsers() {
+    for (auto pair : m_UserButtons) {
+        m_Layout->removeWidget(pair.second);
+        pair.second->deleteLater();
+    }
+    m_UserButtons.clear();
+    updateMemberCount(0);
+}
+
 void ZSideBar::updateMemberCount(int newCount) {
-    m_MemberCount = newCount;
-    m_MembersLabel->setText("Members—1");
+    m_MemberCount  = newCount;
+    auto labelText = QString("Members—%1").arg(m_MemberCount);
+    m_MembersLabel->setText(labelText);
 }

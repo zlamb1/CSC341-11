@@ -11,8 +11,7 @@
 
 struct PacketRequest {
     public:
-        PacketRequest(BasePacketRef packet, UserRef packetSender)
-            : m_Packet(packet), m_PacketSender(packetSender) {}
+        PacketRequest(BasePacketRef packet) : m_Packet(packet) {}
 
         bool accepted() const {
             return m_Accepted;
@@ -26,31 +25,27 @@ struct PacketRequest {
             return m_Packet;
         };
 
-        UserRef packetSender() const {
-            return m_PacketSender;
-        }
-
     protected:
         bool m_Accepted = false;
         BasePacketRef m_Packet;
         UserRef m_PacketSender;
 };
 
-class PacketDestination;
+class PacketHandler;
 
-using PacketDestinationRef = std::shared_ptr<PacketDestination>;
+using PacketHandlerRef = std::shared_ptr<PacketHandler>;
 
-class PacketDestination {
+class PacketHandler {
     public:
-        PacketDestination(PacketDestination *next = 0) : m_Next(next) {}
+        PacketHandler(PacketHandler *next = 0) : m_Next(next) {}
 
         virtual void handlePacket(PacketRequest *request) = 0;
 
-        PacketDestinationRef next() const {
+        PacketHandlerRef next() const {
             return m_Next;
         }
 
-        void setNext(PacketDestinationRef next) {
+        void setNext(PacketHandlerRef next) {
             m_Next = next;
         }
 
@@ -59,5 +54,5 @@ class PacketDestination {
         }
 
     protected:
-        PacketDestinationRef m_Next;
+        PacketHandlerRef m_Next;
 };

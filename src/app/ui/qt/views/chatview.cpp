@@ -1,6 +1,7 @@
+#include <functional>
+
 #include <QGridLayout>
 #include <QScrollArea>
-#include <functional>
 
 #include "chatview.hpp"
 #include "msg/zmessagepane.hpp"
@@ -9,8 +10,7 @@
 #include "zbottombar.hpp"
 #include "zsidebar.hpp"
 
-ChatView::ChatView(const UserService &userService, QWidget *parent)
-    : QWidget(parent) {
+ChatView::ChatView(QWidget *parent) : QWidget(parent) {
     m_Layout = new QGridLayout();
     m_Layout->setSpacing(0);
     m_Layout->setContentsMargins(0, 0, 0, 0);
@@ -35,7 +35,7 @@ ChatView::ChatView(const UserService &userService, QWidget *parent)
     m_SideSeparator->setColor(borderColor);
     m_Layout->addWidget(m_SideSeparator, 0, 1, -1, 1);
 
-    m_SideBar = new ZSideBar(userService);
+    m_SideBar = new ZSideBar;
     m_Layout->addWidget(m_SideBar, 0, 2, -1, 1);
 
     m_BottomSeparator = new HLine;
@@ -48,9 +48,8 @@ ChatView::ChatView(const UserService &userService, QWidget *parent)
     setLayout(m_Layout);
     QObject::connect(m_BottomBar, &ZBottomBar::onSendMessage, this,
                      [this](auto text) {
-                         if (m_MessageHandler) {
+                         if (m_MessageHandler)
                              m_MessageHandler(text);
-                         }
                      });
 }
 

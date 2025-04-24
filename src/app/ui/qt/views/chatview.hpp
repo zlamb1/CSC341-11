@@ -4,7 +4,6 @@
 
 #include "data/msgrepo.hpp"
 #include "data/user.hpp"
-#include "service/userservice.hpp"
 
 class QGridLayout;
 class QScrollArea;
@@ -18,10 +17,9 @@ class ZSideBar;
 
 class ChatView : public QWidget {
     public:
-        explicit ChatView(const UserService &userService, QWidget *parent = 0);
+        explicit ChatView(QWidget *parent = 0);
         ~ChatView();
 
-    signals:
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);
 

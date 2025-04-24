@@ -1,18 +1,14 @@
 #include "service/userservice.hpp"
 #include "event/handler.hpp"
 #include "event/userevent.hpp"
-
-UserService::UserService() {
-    std::string name = "User #";
-    name += std::to_string(rand() % 65536);
-    m_ActiveUser = std::make_shared<User>(name);
-
-    m_Users.emplace_back(m_ActiveUser);
-    m_UserMap[name] = m_ActiveUser;
-}
+#include <iostream>
 
 UserRef UserService::activeUser() {
     return m_ActiveUser;
+}
+
+void UserService::setActiveUser(UserRef activeUser) {
+    m_ActiveUser = activeUser;
 }
 
 UserRef UserService::user(const std::string &name) {

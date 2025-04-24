@@ -10,10 +10,10 @@ if(UI_LIB STREQUAL "Qt")
     find_package(Qt6 REQUIRED COMPONENTS Core Network Widgets)
     qt_standard_project_setup()
 
-    file(GLOB_RECURSE SOURCE_FILES data/*.cpp service/*.cpp ui/*.cpp net/*.cpp)
+    file(GLOB_RECURSE SOURCE_FILES data/*.cpp service/*.cpp view/*.cpp net/*.cpp model/*.cpp)
     qt_add_executable(${CMAKE_PROJECT_NAME} main.cpp chatapp.cpp ${SOURCE_FILES})
 
-    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE . ./ui/qt)
+    target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE . ./view/qt)
     target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Core Qt6::Network Qt6::Widgets)
     set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
         WIN32_EXECUTABLE ON

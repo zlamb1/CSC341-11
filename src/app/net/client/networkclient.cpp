@@ -37,6 +37,10 @@ void INetworkClient::handlePacket(BasePacketRef packet) {
     }
 }
 
+void INetworkClient::setConnectHandler(ConnectHandler connectHandler) {
+    m_ConnectHandler = connectHandler;
+}
+
 void INetworkClient::setDisconnectHandler(DisconnectHandler disconnectHandler) {
     m_DisconnectHandler = disconnectHandler;
 }

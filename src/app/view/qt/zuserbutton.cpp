@@ -1,6 +1,7 @@
 #include <QGridLayout>
 #include <QPainter>
 #include <QPushButton>
+#include <qabstractbutton.h>
 #include <qnamespace.h>
 #include <qobject.h>
 #include <qstyle.h>
@@ -24,8 +25,37 @@ ZUserButton::ZUserButton(UserRef userRef, QWidget *parent)
     setLayout(m_Layout);
 }
 
+bool ZUserButton::hovering() const {
+    return m_Hovering;
+}
+
+bool ZUserButton::selected() const {
+    return m_Selected;
+}
+
+void ZUserButton::setSelected(bool selected) {
+    m_Selected = selected;
+    update();
+}
+
+void ZUserButton::setClickHandler(
+    std::function<void(std::string)> clickHandler) {
+    if (m_HasConnection) {
+        QObject::disconnect(m_Connection);
+    }
+    if (clickHandler) {
+        m_Connection    = QObject::connect(m_Button, &QAbstractButton::clicked,
+                                           [this, clickHandler]() {
+                                            if (auto user = m_UserRef.lock()) {
+                                                clickHandler(user->name());
+                                            }
+                                        });
+        m_HasConnection = true;
+    }
+}
+
 void ZUserButton::paintEvent(QPaintEvent *event) {
-    if (m_Hovering) {
+    if (m_Hovering || m_Selected) {
         QPainter painter(this);
         painter.setPen(Qt::transparent);
         painter.setBrush(m_HoverColor);

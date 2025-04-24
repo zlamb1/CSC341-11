@@ -14,9 +14,14 @@ class ZSideBar : public QWidget {
     public:
         explicit ZSideBar(QWidget *parent = 0);
 
+        void setChat(UserRef userRef);
+
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);
         void clearUsers();
+
+        void
+        setOpenChatHandler(std::function<void(std::string)> openChatHandler);
 
     protected:
         void updateMemberCount(int newCount);
@@ -28,4 +33,6 @@ class ZSideBar : public QWidget {
         std::unordered_map<std::string, ZUserButton *> m_UserButtons;
 
         int m_MemberCount = 0;
+
+        std::function<void(std::string)> m_OpenChatHandler;
 };

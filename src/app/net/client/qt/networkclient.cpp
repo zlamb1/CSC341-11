@@ -19,6 +19,8 @@ QtNetworkClient::QtNetworkClient(std::string requestedName,
         m_PacketWorker, &QtThreadedPacketWorker::connected, [this]() {
             auto packet = CreatePacketRef<UserConnectPacket>(m_RequestedName);
             m_PacketWorker->writePacket(packet);
+            if (m_ConnectHandler)
+                m_ConnectHandler();
         });
 
     QObject::connect(m_PacketWorker, &QtThreadedPacketWorker::disconnected,

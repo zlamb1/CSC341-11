@@ -3,6 +3,7 @@
 #include <QEnterEvent>
 #include <QPaintEvent>
 #include <QWidget>
+#include <qobjectdefs.h>
 
 #include "data/user.hpp"
 
@@ -14,13 +15,26 @@ class ZUserButton : public QWidget {
     public:
         explicit ZUserButton(UserRef userRef, QWidget *parent = 0);
 
+        bool hovering() const;
+        bool selected() const;
+
+        void setSelected(bool selected);
+
+        void setClickHandler(std::function<void(std::string)> clickHandler);
+        bool removeClickHandler();
+
     protected:
         UserWeakRef m_UserRef;
 
         QGridLayout *m_Layout;
         QPushButton *m_Button;
 
-        bool m_Hovering     = false;
+        bool m_HasConnection = false;
+        QMetaObject::Connection m_Connection;
+
+        bool m_Hovering = false;
+        bool m_Selected = false;
+
         QColor m_HoverColor = QColor(255, 255, 255, 20);
 
         void paintEvent(QPaintEvent *event);

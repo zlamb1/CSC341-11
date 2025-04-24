@@ -2,6 +2,8 @@
 #include <QLabel>
 #include <QPaintEvent>
 #include <QPainter>
+#include <functional>
+#include <qpushbutton.h>
 
 #include "data/user.hpp"
 #include "zsidebar.hpp"
@@ -19,8 +21,18 @@ ZSideBar::ZSideBar(QWidget *parent) : QWidget(parent) {
     setLayout(m_Layout);
 }
 
+void ZSideBar::setChat(UserRef userRef) {
+    if (m_UserButtons.count(userRef->name())) {
+        m_UserButtons[userRef->name()]->setSelected(true);
+    }
+}
+
 void ZSideBar::addUser(UserRef userRef) {
-    auto *button                   = new ZUserButton(userRef, this);
+    auto *button = new ZUserButton(userRef, this);
+
+    if (m_OpenChatHandler)
+        button->setClickHandler(m_OpenChatHandler);
+
     m_UserButtons[userRef->name()] = button;
     m_Layout->addWidget(button);
     updateMemberCount(m_MemberCount + 1);
@@ -49,4 +61,13 @@ void ZSideBar::updateMemberCount(int newCount) {
     m_MemberCount  = newCount;
     auto labelText = QString("Members—%1").arg(m_MemberCount);
     m_MembersLabel->setText(labelText);
+}
+
+void ZSideBar::setOpenChatHandler(
+    std::function<void(std::string)> openChatHandler) {
+    for (auto pair : m_UserButtons) {
+        auto button = pair.second;
+        button->setClickHandler(openChatHandler);
+    }
+    m_OpenChatHandler = openChatHandler;
 }

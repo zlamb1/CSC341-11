@@ -34,6 +34,6 @@ void ZBottomBar::clearMessageText() {
 
 void ZBottomBar::sendMessage(std::string text) {
     if (!text.empty()) {
-        emit onSendMessage(text);
+        emit messageSent(text);
     }
 }

@@ -19,7 +19,7 @@ class ZBottomBar : public QWidget {
         void sendMessage(std::string text);
 
     signals:
-        void onSendMessage(std::string text);
+        void messageSent(std::string text);
 
     private:
         QLineEdit *m_MsgLineEdit;

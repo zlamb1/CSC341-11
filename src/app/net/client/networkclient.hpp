@@ -6,6 +6,7 @@
 #include "net/packet/base.hpp"
 #include "net/packet/dest.hpp"
 
+using ConnectHandler    = std::function<void()>;
 using DisconnectHandler = std::function<void()>;
 
 class INetworkClient {
@@ -20,10 +21,13 @@ class INetworkClient {
 
         virtual void handlePacket(BasePacketRef packet);
 
+        virtual void setConnectHandler(ConnectHandler connectHandler);
         virtual void setDisconnectHandler(DisconnectHandler disconnectHandler);
 
     protected:
         PacketHandlerRef m_PacketHandlers;
+
+        ConnectHandler m_ConnectHandler;
         DisconnectHandler m_DisconnectHandler;
 };
 

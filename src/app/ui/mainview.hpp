@@ -23,9 +23,10 @@ class MainView {
         virtual void
         setMessageRepository(IMessageRepositoryRef messageRepo) = 0;
 
-        virtual void setHostHandler(std::function<void()> hostHandler) = 0;
-        virtual void
-        setConnectHandler(std::function<void()> connectHandler) = 0;
+        virtual void setHostHandler(
+            std::function<void(std::string, uint16_t)> hostHandler) = 0;
+        virtual void setConnectHandler(
+            std::function<void(std::string, uint16_t)> connectHandler) = 0;
 
         virtual void
         setMessageHandler(std::function<void(std::string)> handler) = 0;

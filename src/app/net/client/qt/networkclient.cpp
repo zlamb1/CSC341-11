@@ -21,6 +21,12 @@ QtNetworkClient::QtNetworkClient(std::string requestedName,
             m_PacketWorker->writePacket(packet);
         });
 
+    QObject::connect(m_PacketWorker, &QtThreadedPacketWorker::disconnected,
+                     [this]() {
+                         if (m_DisconnectHandler)
+                             m_DisconnectHandler();
+                     });
+
     QObject::connect(m_PacketWorker, &QtThreadedPacketWorker::packetRead, this,
                      &QtNetworkClient::packetRead);
 }

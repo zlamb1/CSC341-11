@@ -11,7 +11,7 @@
 #include "zsidebar.hpp"
 
 ChatView::ChatView(QWidget *parent) : QWidget(parent) {
-    m_Layout = new QGridLayout();
+    m_Layout = new QGridLayout(this);
     m_Layout->setSpacing(0);
     m_Layout->setContentsMargins(0, 0, 0, 0);
     m_Layout->setColumnStretch(0, 1);
@@ -19,9 +19,9 @@ ChatView::ChatView(QWidget *parent) : QWidget(parent) {
     m_Layout->setRowStretch(0, 1);
     m_Layout->setRowStretch(1, 0);
 
-    m_MessagePane = new ZMessagePane;
+    m_MessagePane = new ZMessagePane(this);
 
-    m_MessagePaneScrollArea = new QScrollArea;
+    m_MessagePaneScrollArea = new QScrollArea(this);
     m_MessagePaneScrollArea->setWidget(m_MessagePane);
     m_MessagePaneScrollArea->setWidgetResizable(true);
     m_MessagePaneScrollArea->setFrameShape(QFrame::NoFrame);
@@ -31,18 +31,18 @@ ChatView::ChatView(QWidget *parent) : QWidget(parent) {
     QColor borderColor = palette().color(QPalette::WindowText);
     borderColor.setAlphaF(0.1F);
 
-    m_SideSeparator = new VLine;
+    m_SideSeparator = new VLine(this);
     m_SideSeparator->setColor(borderColor);
     m_Layout->addWidget(m_SideSeparator, 0, 1, -1, 1);
 
-    m_SideBar = new ZSideBar;
+    m_SideBar = new ZSideBar(this);
     m_Layout->addWidget(m_SideBar, 0, 2, -1, 1);
 
-    m_BottomSeparator = new HLine;
+    m_BottomSeparator = new HLine(this);
     m_BottomSeparator->setColor(borderColor);
     m_Layout->addWidget(m_BottomSeparator, 1, 0, 1, 1);
 
-    m_BottomBar = new ZBottomBar;
+    m_BottomBar = new ZBottomBar(this);
     m_Layout->addWidget(m_BottomBar, 2, 0, 1, 1);
 
     setLayout(m_Layout);
@@ -51,16 +51,6 @@ ChatView::ChatView(QWidget *parent) : QWidget(parent) {
                          if (m_MessageHandler)
                              m_MessageHandler(text);
                      });
-}
-
-ChatView::~ChatView() {
-    delete m_MessagePane;
-    delete m_MessagePaneScrollArea;
-    delete m_SideSeparator;
-    delete m_BottomSeparator;
-    delete m_SideBar;
-    delete m_BottomBar;
-    delete m_Layout;
 }
 
 void ChatView::addUser(UserRef userRef) {

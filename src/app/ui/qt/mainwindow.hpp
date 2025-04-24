@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow, public MainView {
 
     public:
         explicit MainWindow(QWidget *parent = 0);
-        virtual ~MainWindow() override;
+        virtual ~MainWindow() = default;
 
         virtual void show() override;
 
@@ -43,9 +43,10 @@ class MainWindow : public QMainWindow, public MainView {
         virtual void
         setMessageRepository(IMessageRepositoryRef messageRepo) override;
 
-        virtual void setHostHandler(std::function<void()> hostHandler) override;
-        virtual void
-        setConnectHandler(std::function<void()> connectHandler) override;
+        virtual void setHostHandler(
+            std::function<void(std::string, uint16_t)> hostHandler) override;
+        virtual void setConnectHandler(
+            std::function<void(std::string, uint16_t)> connectHandler) override;
 
         virtual void
         setMessageHandler(std::function<void(std::string)> handler) override;

@@ -6,19 +6,21 @@
 
 #include "data/user.hpp"
 
+class QGridLayout;
 class QPushButton;
 
 class ZUserButton : public QWidget {
         Q_OBJECT
     public:
         explicit ZUserButton(UserRef userRef, QWidget *parent = 0);
-        ~ZUserButton();
 
     protected:
         UserWeakRef m_UserRef;
+
+        QGridLayout *m_Layout;
         QPushButton *m_Button;
 
-        bool m_Hovering = false;
+        bool m_Hovering     = false;
         QColor m_HoverColor = QColor(255, 255, 255, 20);
 
         void paintEvent(QPaintEvent *event);

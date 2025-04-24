@@ -21,5 +21,5 @@ class ChatApp {
 
         MainView *m_MainView;
 
-        void connectWithClient();
+        void connectWithClient(std::string hostAddress, uint16_t port);
 };

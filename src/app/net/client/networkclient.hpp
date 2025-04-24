@@ -1,9 +1,12 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 
 #include "net/packet/base.hpp"
 #include "net/packet/dest.hpp"
+
+using DisconnectHandler = std::function<void()>;
 
 class INetworkClient {
     public:
@@ -17,8 +20,11 @@ class INetworkClient {
 
         virtual void handlePacket(BasePacketRef packet);
 
+        virtual void setDisconnectHandler(DisconnectHandler disconnectHandler);
+
     protected:
         PacketHandlerRef m_PacketHandlers;
+        DisconnectHandler m_DisconnectHandler;
 };
 
 using INetworkClientRef = std::shared_ptr<INetworkClient>;

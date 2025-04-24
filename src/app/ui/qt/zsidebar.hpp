@@ -13,7 +13,6 @@ class ZSideBar : public QWidget {
         Q_OBJECT
     public:
         explicit ZSideBar(QWidget *parent = 0);
-        ~ZSideBar();
 
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);

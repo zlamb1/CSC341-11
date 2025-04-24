@@ -8,10 +8,10 @@
 #include "zuserbutton.hpp"
 
 ZSideBar::ZSideBar(QWidget *parent) : QWidget(parent) {
-    m_Layout = new QVBoxLayout();
+    m_Layout = new QVBoxLayout(this);
     m_Layout->setAlignment(Qt::AlignTop);
 
-    m_MembersLabel = new QLabel();
+    m_MembersLabel = new QLabel(this);
     m_Layout->addWidget(m_MembersLabel);
 
     updateMemberCount(0);
@@ -19,13 +19,8 @@ ZSideBar::ZSideBar(QWidget *parent) : QWidget(parent) {
     setLayout(m_Layout);
 }
 
-ZSideBar::~ZSideBar() {
-    delete m_MembersLabel;
-    delete m_Layout;
-}
-
 void ZSideBar::addUser(UserRef userRef) {
-    auto *button                   = new ZUserButton(userRef);
+    auto *button                   = new ZUserButton(userRef, this);
     m_UserButtons[userRef->name()] = button;
     m_Layout->addWidget(button);
     updateMemberCount(m_MemberCount + 1);

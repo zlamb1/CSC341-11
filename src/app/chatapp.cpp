@@ -32,17 +32,17 @@ ChatApp::ChatApp(int argc, char *argv[]) {
 
     m_MainView->setMessageRepository(m_GlobalMessageRepo);
 
-    m_MainView->setHostHandler([&] {
+    m_MainView->setHostHandler([&](auto hostAddress, auto port) {
         m_NetworkServer = std::make_shared<QtNetworkServer>(m_UserService);
-        m_NetworkServer->listen("127.0.0.1", 9090);
+        m_NetworkServer->listen(hostAddress, port);
 
-        connectWithClient();
+        connectWithClient(hostAddress, port);
 
         m_MainView->showChatView();
     });
 
-    m_MainView->setConnectHandler([&]() {
-        connectWithClient();
+    m_MainView->setConnectHandler([&](auto hostAddress, auto port) {
+        connectWithClient(hostAddress, port);
         m_MainView->showChatView();
     });
 
@@ -60,12 +60,23 @@ ChatApp::~ChatApp() {
     delete m_MainView;
 }
 
-void ChatApp::connectWithClient() {
+void ChatApp::connectWithClient(std::string hostAddress, uint16_t port) {
     std::string name = "User #";
     name += std::to_string(rand() % 65356);
 
     m_NetworkClient = std::make_shared<QtNetworkClient>(name, m_UserService);
-    m_NetworkClient->connect("127.0.0.1", 9090);
+
+    m_NetworkClient->setDisconnectHandler([this]() {
+        if (m_NetworkServer) {
+            // m_NetworkServer.close();
+            m_NetworkServer = nullptr;
+        }
+        m_NetworkClient = nullptr;
+        m_MainView->setMessageRepository(nullptr);
+        m_MainView->showMenuView();
+    });
+
+    m_NetworkClient->connect(hostAddress, port);
 
     auto wrapperUserService =
         std::make_shared<ClientUserService>(m_UserService, m_NetworkClient);

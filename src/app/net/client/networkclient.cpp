@@ -36,3 +36,7 @@ void INetworkClient::handlePacket(BasePacketRef packet) {
         packetHandler = packetHandler->next();
     }
 }
+
+void INetworkClient::setDisconnectHandler(DisconnectHandler disconnectHandler) {
+    m_DisconnectHandler = disconnectHandler;
+}

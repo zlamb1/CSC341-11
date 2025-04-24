@@ -7,9 +7,9 @@
 #include "views/menuview.hpp"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-    m_CenterWidget = new QStackedWidget;
-    m_MenuView     = new MenuView;
-    m_ChatView     = new ChatView;
+    m_CenterWidget = new QStackedWidget(this);
+    m_MenuView     = new MenuView(this);
+    m_ChatView     = new ChatView(this);
 
     m_CenterWidget->addWidget(m_MenuView);
     m_CenterWidget->addWidget(m_ChatView);
@@ -19,12 +19,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
     resize(500, 500);
     setWindowTitle(tr("EmberChat"));
-}
-
-MainWindow::~MainWindow() {
-    delete m_MenuView;
-    delete m_ChatView;
-    delete m_CenterWidget;
 }
 
 void MainWindow::show() {
@@ -56,7 +50,8 @@ void MainWindow::setMessageRepository(IMessageRepositoryRef messageRepo) {
     m_ActiveRepo = messageRepo;
 }
 
-void MainWindow::setHostHandler(std::function<void()> hostHandler) {
+void MainWindow::setHostHandler(
+    std::function<void(std::string, uint16_t)> hostHandler) {
     if (m_HostHandlerSet)
         QObject::disconnect(m_HostHandler);
     else
@@ -65,7 +60,8 @@ void MainWindow::setHostHandler(std::function<void()> hostHandler) {
         QObject::connect(m_MenuView, &MenuView::onHost, hostHandler);
 }
 
-void MainWindow::setConnectHandler(std::function<void()> connectHandler) {
+void MainWindow::setConnectHandler(
+    std::function<void(std::string, uint16_t)> connectHandler) {
     if (m_ConnectHandlerSet)
         QObject::disconnect(m_ConnectHandler);
     else

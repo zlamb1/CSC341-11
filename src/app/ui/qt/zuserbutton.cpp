@@ -10,22 +10,18 @@
 
 ZUserButton::ZUserButton(UserRef userRef, QWidget *parent)
     : QWidget(parent), m_UserRef(userRef) {
-    QGridLayout *layout = new QGridLayout;
+    m_Layout = new QGridLayout(this);
 
-    m_Button = new QPushButton(userRef->name().c_str());
+    m_Button = new QPushButton(userRef->name().c_str(), this);
     m_Button->setMinimumHeight(20);
     m_Button->setStyleSheet(
         QString("background-color: transparent; border: 0;"));
     m_Button->setFlat(true);
 
-    layout->addWidget(m_Button);
+    m_Layout->addWidget(m_Button);
 
     setCursor(Qt::OpenHandCursor);
-    setLayout(layout);
-}
-
-ZUserButton::~ZUserButton() {
-    delete m_Button;
+    setLayout(m_Layout);
 }
 
 void ZUserButton::paintEvent(QPaintEvent *event) {

@@ -12,7 +12,6 @@ class ZBottomBar : public QWidget {
 
     public:
         explicit ZBottomBar(QWidget *parent = 0);
-        ~ZBottomBar();
 
         void clearMessageText();
 

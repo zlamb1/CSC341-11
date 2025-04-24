@@ -6,7 +6,6 @@ class HLine : public QFrame {
         Q_OBJECT
     public:
         explicit HLine(QWidget *parent = 0);
-        ~HLine() = default;
 
         QColor color() const;
         void setColor(QColor color);

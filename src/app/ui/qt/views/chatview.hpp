@@ -18,7 +18,6 @@ class ZSideBar;
 class ChatView : public QWidget {
     public:
         explicit ChatView(QWidget *parent = 0);
-        ~ChatView();
 
         void addUser(UserRef userRef);
         void deleteUser(UserRef userRef);
